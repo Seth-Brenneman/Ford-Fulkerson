@@ -107,11 +107,11 @@ def create_max_flow_graph(walls, lights, switches):
         adjMatrix[i] = list(0 for j in range(0, vertices))
         i += 1
 
-    for i in range(1): #Setup source edges 
+    for i in range(1): # Setup source edges 
         for j in range(1, numLights + 1):
             adjMatrix[i][j] = 1
 
-    for i in range(numSwitches + 1, vertices - 1): #Setup sink edges
+    for i in range(numSwitches + 1, vertices - 1): # Setup sink edges
         for j in range(1):
             adjMatrix[i][-1] = 1
 
