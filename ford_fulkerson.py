@@ -99,11 +99,11 @@ def breadth_first_search(graph, source, sink, parentTracker):
 def create_max_flow_graph(walls, lights, switches):
     numLights = len(lights)
     numSwitches = len(switches)
-    vertices = 1 + numLights + numSwitches + 1
-    adjMatrix = [[]] * vertices
+    vertices = 1 + numLights + numSwitches + 1 # Total length of the graph/adjacency matrix
+    adjMatrix = [[]] * vertices # Creates a list of lists which will be the adjacency matrix
 
     i = 0
-    while i < vertices:
+    while i < vertices: # Populates the adjacency matrix with all 0s
         adjMatrix[i] = list(0 for j in range(0, vertices))
         i += 1
 
@@ -131,29 +131,29 @@ def create_max_flow_graph(walls, lights, switches):
 
 
 def ford_fulkerson(graph, source, sink):
-    parentTracker = [0] * len(graph)
-    u, v = 0, 0
-    residualGraph = graph
-    maxFlow = 0
+    parentTracker = [0] * len(graph) # Track the parent of each node
+    u, v = 0, 0 # u = current node, v = target node
+    residualGraph = graph # Create the residual graph from the original graph
+    maxFlow = 0 # Initialize a variable to store the max flow of the graph
 
-    while breadth_first_search(residualGraph, source, sink, parentTracker):
-        pathFlow = float('inf')
-        v = sink
+    while breadth_first_search(residualGraph, source, sink, parentTracker): # While there is a path from the source to the sink
+        pathFlow = float('inf') # Initialize path flow to infinite 
+        v = sink # Set the destination or end node to the sink
 
-        while not v == source:
-            u = parentTracker[v]
-            pathFlow = min(pathFlow, residualGraph[u][v])
-            v = parentTracker[v]
+        while not v == source: # While v is not 0
+            u = parentTracker[v] # u is the parent node for v
+            pathFlow = min(pathFlow, residualGraph[u][v]) # Update path flow to be the bottleneck of the current path
+            v = parentTracker[v] # Create backwards edge
 
-        v = sink
+        v = sink # Reset v to the sink
 
-        while not v == source:
-            u = parentTracker[v]
-            residualGraph[u][v] -= pathFlow
-            residualGraph[v][u] += pathFlow
-            v = parentTracker[v]
+        while not v == source: # While v is not 0
+            u = parentTracker[v] # u is the parent node for v
+            residualGraph[u][v] -= pathFlow # Subtract flow from the path
+            residualGraph[v][u] += pathFlow # Add flow to backwards edges
+            v = parentTracker[v] # Create backwards edge
         
-        maxFlow += pathFlow
+        maxFlow += pathFlow # add path flow to the max flow
     return maxFlow
 
 
